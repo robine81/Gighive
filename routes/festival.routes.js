@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const uploader = require('../middleware/cloudinary.config');
 
 const mongoose = require('mongoose')
 
@@ -92,12 +93,13 @@ router.post('/add-festival', isLoggedIn, fileUploader.single('image'), async (re
   });
   
   /* POST festival edited */
-  router.post("/edit-festival/:festivalId", isLoggedIn, fileUploader.single('image'), async (req, res) => {
+  router.post("/edit-festival/:festivalId", isLoggedIn, uploader.single('imageUrl'), async (req, res) => {
     try {    
       const festivalId = req.params.festivalId
-      const {name, venue, textInfo, genre, date, imageUrl, socialMedia} = req.body
+      const {name, venue, textInfo, genre, date, socialMedia} = req.body
+      const image = req.file.path
       const updatedfestival = await Festival.findByIdAndUpdate(festivalId, {name, venue, textInfo, genre, date, imageUrl, socialMedia}, {new: true,});
-      res.redirect("/profile/profile");
+      res.redirect("/profile");
     } catch (err){
       console.error('There is an error with the edit festival page' , err)
     }

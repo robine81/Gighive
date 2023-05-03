@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const uploader = require('../middleware/cloudinary.config');
 
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
@@ -42,12 +43,13 @@ router.get("/edit-profile", isLoggedIn, async (req, res) => {
 });
 
 /* POST profile edited */
-router.post("/profile-edited", isLoggedIn, async (req, res) => {
+router.post("/profile-edited", isLoggedIn, uploader.single("imageUrl"), async (req, res) => {
   try {
-    const sessionId = req.session.user._id
+  const sessionId = req.session.user._id
   const {name, surname, username, country, email} = req.body
+  const image = req.file.path
   const updatedUser = await User.findByIdAndUpdate(sessionId, {name, surname, username, country, email}, { new: true });
-  res.redirect("profile");}
+  res.redirect("/profile");}
   catch (err){
     console.error('There is an error with the edited profile page' , err)
   }

@@ -33,6 +33,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    image: {
+      type: String
+    }
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

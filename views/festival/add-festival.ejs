@@ -38,6 +38,9 @@
             Social Media
             <input type="text" name="socialMedia" />
           </label>
+          <label>
+            <input type="file" name="imageUrl" accept="image/png, image/jpg">
+          </label>
         <button type="submit">Add new festival</button>
       </form>
       <% if (typeof errorMessage !== 'undefined') { %> <%= errorMessage %> <% } %>

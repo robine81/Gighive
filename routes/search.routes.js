@@ -5,9 +5,17 @@ const router = express.Router()
 const Festival = require('../models/Festival.model')
 
 /* GET Search page */
-router.get('/', async (req, res, next) => {
-    const allFestivals = await Festival.find()
-    res.render('search-result', {allFestivals});
-  })
 
-  module.exports = router
+
+router.get('/', async (req, res, next) => {
+  try { 
+    const {query} = req.query
+    const allFestivals = await Festival.find({ name: query })
+    console.log(allFestivals);
+    res.render('search-result', {allFestivals});
+  } catch(error) {
+    console.error(error);
+  }
+})
+
+module.exports = router
